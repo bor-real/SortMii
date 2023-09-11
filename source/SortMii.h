@@ -7,48 +7,72 @@
 #include <random>
 #include <algorithm>
 #include <string>
+#include <memory>
+#include <iostream>
 
 #include "Visualizer.h"
 #include "Algorithms.h"
 
 class SortMii {
 public:
+    SortMii(int initialAmount) : rd(), d(1, initialAmount), currentAmount(initialAmount) {
+        randomize(initialAmount);
+
+        av.emplace_back(std::make_unique<BubbleSort>(v));
+        av.emplace_back(std::make_unique<GnomeSort>(v));
+        av.emplace_back(std::make_unique<InsertionSort>(v));
+
+        while (true) {
+            WPAD_ScanPads();
+
+            if (WPAD_ButtonsDown(0) & WPAD_BUTTON_HOME) break;
+
+            handleInput();
+
+            av[currentAlgorithm]->step(v);
+            vis.draw(v, av[currentAlgorithm]->name());
+        }
+    }
+
+private:
+    std::random_device rd;
+    std::uniform_int_distribution<int> d;
+    std::vector<int> v;
+    std::vector<std::unique_ptr<Algorithm>> av;
+    unsigned int currentAlgorithm = 0;
+    int currentAmount = 0;
+    Visualizer vis;
+
     void randomize(int amount) {
         v.clear();
+        v.reserve(amount);
 
         for (int i = 0; i < amount; i++) {
             v.push_back(d(rd));
         }
     }
 
-    SortMii(int amount) : rd(), d(1, amount), bubble(v)  {
-        randomize(amount);
+    void handleInput() {
+        if (WPAD_ButtonsDown(0) & WPAD_BUTTON_LEFT) {
+            av[currentAlgorithm]->reset();
+            if (currentAlgorithm++ >= av.size() - 1) currentAlgorithm = 0;
+            randomize(currentAmount);
+        }
+        if (WPAD_ButtonsDown(0) & WPAD_BUTTON_RIGHT) {
+            av[currentAlgorithm]->reset();
+            if (currentAlgorithm-- <= 0) currentAlgorithm = av.size() - 1;
+            randomize(currentAmount);
+        }
 
-        while(1) {
-            WPAD_ScanPads();
-
-            if (WPAD_ButtonsDown(0) & WPAD_BUTTON_HOME)  break;
-            if (WPAD_ButtonsDown(0) & WPAD_BUTTON_PLUS)  {
-                amount += 5;
-                randomize(amount);
-                bubble.reset();
-            }
-            if (WPAD_ButtonsDown(0) & WPAD_BUTTON_MINUS)  {
-                amount -= 5;
-                randomize(amount);
-                bubble.reset();
-            }
-
-            bubble.step(v);
-            vis.draw(v);
+        if (WPAD_ButtonsDown(0) & WPAD_BUTTON_UP && currentAmount < (WIDTH / 2)) {
+            currentAmount += 5;
+            randomize(currentAmount);
+            av[currentAlgorithm]->reset();
+        }
+        if (WPAD_ButtonsDown(0) & WPAD_BUTTON_DOWN && currentAmount > 5) {
+            currentAmount -= 5;
+            randomize(currentAmount);
+            av[currentAlgorithm]->reset();
         }
     }
-private:
-    std::random_device rd;
-    std::uniform_int_distribution<int> d;
-    std::vector<int> v;
-
-    Visualizer vis;
-    
-    BubbleSort bubble;
 };

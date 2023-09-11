@@ -9,7 +9,7 @@
 #define WIDTH 640
 #define HEIGHT 480
 
-#define VERSION "0.1.2"
+#define VERSION "0.2.0"
 
 class Visualizer {
 public:
@@ -22,7 +22,7 @@ public:
         GRRLIB_FreeTexture(tex_font);
     }
 
-    void draw(std::vector<int> v) {
+    void draw(std::vector<int> v, std::string name) {
         GRRLIB_FillScreen(0x000000FF);
         int numBars = v.size();
         int totalGapWidth = numBars - 1;
@@ -39,8 +39,8 @@ public:
 
         //move on to drawing the text
 
-        GRRLIB_Rectangle(0, 0, WIDTH, HEIGHT * 0.1, 0x00000099, 1);
-        GRRLIB_Printf(20, 20, tex_font, 0xFFFFFFFF, 1, "SortMii %s", VERSION);
+        GRRLIB_Rectangle(0, 0, WIDTH, HEIGHT * 0.1, 0x000000BB, 1);
+        GRRLIB_Printf(20, 20, tex_font, 0xFFFFFFFF, 1, "SortMii %s, %s", VERSION, name.c_str());
 
         GRRLIB_Render();
     }
