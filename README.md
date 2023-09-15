@@ -3,7 +3,7 @@ This visualizes sorting algorithms on your Wii.
 
 ## Algorithms
 - Bubble Sort
-- Cocktail Shaker Sort (incorrectly listed as Cocktail Sort because it would go off the screen if I didn't)
+- Cocktail Shaker Sort \(incorrectly listed as Cocktail Sort because it would go off the screen if I didn't\)
 - Gnome Sort
 - Insertion Sort
 
