@@ -12,6 +12,7 @@
 
 #include "Visualizer.h"
 #include "Algorithms.h"
+#include "AlgorithmInfo.h"
 
 class SortMii {
 public:
@@ -19,6 +20,8 @@ public:
         randomize(initialAmount);
 
         av.emplace_back(std::make_unique<BubbleSort>(v));
+        av.emplace_back(std::make_unique<CocktailShakerSort>(v));
+        
         av.emplace_back(std::make_unique<GnomeSort>(v));
         av.emplace_back(std::make_unique<InsertionSort>(v));
 
@@ -29,8 +32,8 @@ public:
 
             handleInput();
 
-            av[currentAlgorithm]->step(v);
-            vis.draw(v, av[currentAlgorithm]->name());
+            AlgorithmInfo ai = av[currentAlgorithm]->step(v);
+            vis.draw(v, ai, av[currentAlgorithm]->name());
         }
     }
 
@@ -53,12 +56,12 @@ private:
     }
 
     void handleInput() {
-        if (WPAD_ButtonsDown(0) & WPAD_BUTTON_LEFT) {
+        if (WPAD_ButtonsDown(0) & WPAD_BUTTON_RIGHT) {
             av[currentAlgorithm]->reset();
             if (currentAlgorithm++ >= av.size() - 1) currentAlgorithm = 0;
             randomize(currentAmount);
         }
-        if (WPAD_ButtonsDown(0) & WPAD_BUTTON_RIGHT) {
+        if (WPAD_ButtonsDown(0) & WPAD_BUTTON_LEFT) {
             av[currentAlgorithm]->reset();
             if (currentAlgorithm-- <= 0) currentAlgorithm = av.size() - 1;
             randomize(currentAmount);
@@ -75,4 +78,5 @@ private:
             av[currentAlgorithm]->reset();
         }
     }
+
 };
