@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <app version="1">
 	<name>SortMii</name>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 	<release_date>20230914000000</release_date>
 	<coder>boreal</coder>
 	<short_description>Sorting Algorithm Visualizer</short_description>
