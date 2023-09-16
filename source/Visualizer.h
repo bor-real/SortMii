@@ -11,7 +11,7 @@
 #define WIDTH 640
 #define HEIGHT 480
 
-#define VERSION "0.3.0"
+#define VERSION "0.3.1"
 
 class Visualizer {
 public:

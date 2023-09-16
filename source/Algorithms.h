@@ -35,7 +35,6 @@ public:
         }
 
         info.redPos = j;
-        info.bluePos = 0;
         info.accesses = accesses;
         info.comparisons = comparisons;
 
@@ -114,7 +113,7 @@ public:
     }
 
     std::string name() const override {
-        return "Cocktail Sort";
+        return "Cocktail Sort"; // it would cut off if i included shaker
     }
 
 private:
@@ -138,10 +137,6 @@ public:
             pos++;
         }
         if (pos < arr.size()) {
-            info.redPos = pos;
-            info.bluePos = 0;
-            accesses += 2;
-            comparisons++;
 
             if (arr[pos] >= arr[pos - 1]) {
                 pos++;
@@ -149,6 +144,10 @@ public:
                 std::swap(arr[pos], arr[pos - 1]);
                 pos--;
             }
+
+            info.redPos = pos;
+            accesses += 2;
+            comparisons++;
         } else {
             info.redPos = 0;
             info.bluePos = 0;
